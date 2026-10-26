@@ -1,10 +1,8 @@
-﻿```python
 import discord
 from discord.ext import commands, tasks
 import os
 import json
 
-# Replace PASTE_YOUR_DISCORD_BOT_TOKEN_HERE with your actual bot token inside quotes
 TOKEN = "MTU2NDI1Njk2NTE0Mjc4MTk5NQ.GEPodz.540l842nmFKbqbHsW-0Kgy87Lzgdaz4LVvtvwY"
 
 # Setup Bot
@@ -81,4 +79,3 @@ async def on_ready():
         reset_weekly_limits.start()
 
 bot.run(TOKEN)
-```
