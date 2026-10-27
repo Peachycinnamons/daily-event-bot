@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 import os
 import json
 
-TOKEN = "MTU2NDI1Njk2NTE0Mjc4MTk5NQ.GH2nAa.4DSA2Y02YtOQKFkfIItPMJYi84pIKayBmCFFZo"
+TOKEN = "MTU2NDI1Njk2NTE0Mjc4MTk5NQ.G0NgM1.11ffpCfYzwdxR38THfYahczLQdVf1YARAOymAI"
 
 # Setup Bot
 intents = discord.Intents.default()
