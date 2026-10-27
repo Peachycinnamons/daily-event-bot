@@ -41,7 +41,7 @@ class EventView(discord.ui.View):
             attendee_list = "_No one has signed up yet._"
 
         embed = discord.Embed(
-            title="📅 Daily Session RSVP",
+            title="📅 Daily RED BOX Attendance",
             description=(
                 "Click the button below to reserve your spot!\n\n"
                 f"• **Attendees Today ({len(self.attendees)}/10):**\n{attendee_list}\n\n"
