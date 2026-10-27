@@ -3,9 +3,9 @@ from discord.ext import commands, tasks
 import os
 import json
 
-TOKEN = MTU2NDI1Njk2NTE0Mjc4MTk5NQ.G0NgM1.11ffpCfYzwdxR38THfYahczLQdVf1YARAOymAI
+# Setup Bot securely using Render environment variables
+TOKEN = os.getenv("TOKEN")
 
-# Setup Bot
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -78,4 +78,7 @@ async def on_ready():
     if not reset_weekly_limits.is_running():
         reset_weekly_limits.start()
 
-bot.run(TOKEN)
+if TOKEN:
+    bot.run(TOKEN)
+else:
+    print("❌ Error: TOKEN environment variable not found!")
