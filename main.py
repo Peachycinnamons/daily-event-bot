@@ -72,7 +72,7 @@ class EventView(discord.ui.View):
             user_weekly_counts[user_id] = current_count + 1
             save_counts(user_weekly_counts)
             
-            # Update the message embed dynamically with the new attendee list
+            # Update message embed and send ephemeral confirmation safely
             await interaction.response.edit_message(embed=self.build_embed(), view=self)
             await interaction.followup.send(f"✅ Slot confirmed! ({user_weekly_counts[user_id]}/4 sessions used this week)", ephemeral=True)
         else:
@@ -120,7 +120,6 @@ async def check_limits(ctx):
 # Weekly count auto-reset every Sunday midnight Philippine Time
 @tasks.loop(time=datetime.time(hour=0, minute=0, tzinfo=ZoneInfo("Asia/Manila")))
 async def reset_weekly_limits():
-    # Only run the reset if today is Sunday (weekday() == 6)
     if datetime.datetime.now(ZoneInfo("Asia/Manila")).weekday() == 6:
         global user_weekly_counts
         user_weekly_counts = {}
@@ -129,6 +128,10 @@ async def reset_weekly_limits():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+    
+    # CRITICAL: Register persistent view so buttons don't break on restart
+    bot.add_view(EventView())
+    
     if not reset_weekly_limits.is_running():
         reset_weekly_limits.start()
     if not daily_event_deployment.is_running():
