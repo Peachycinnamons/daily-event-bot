@@ -65,6 +65,28 @@ async def start_event(ctx):
     )
     await ctx.send(embed=embed, view=EventView())
 
+# Check who has maxed out their weekly limits
+@bot.command(name="checklimits")
+@commands.has_permissions(administrator=True)
+async def check_limits(ctx):
+    current_counts = load_counts()
+    
+    maxed_out_users = []
+    for user_id, count in current_counts.items():
+        if count >= 4:
+            maxed_out_users.append(f"<@{user_id}> ({count}/4 sessions)")
+
+    if not maxed_out_users:
+        await ctx.send("✅ No one has maxed out their 4x weekly limit yet!")
+        return
+
+    embed = discord.Embed(
+        title="🛑 Users at Weekly Limit (4/4)",
+        description="\n".join(maxed_out_users),
+        color=0xe74c3c
+    )
+    await ctx.send(embed=embed)
+    
 # Weekly count auto-reset every Sunday midnight (168 hours)
 @tasks.loop(hours=168)
 async def reset_weekly_limits():
