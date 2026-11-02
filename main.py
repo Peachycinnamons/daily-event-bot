@@ -85,6 +85,15 @@ async def start_event(ctx):
     view = EventView()
     await ctx.send(embed=view.build_embed(), view=view)
 
+# Manual command to reset weekly limits for everyone
+@bot.command(name="reset")
+@commands.has_permissions(administrator=True)
+async def reset_limits_manual(ctx):
+    global user_weekly_counts
+    user_weekly_counts = {}
+    save_counts(user_weekly_counts)
+    await ctx.send("🔄 Weekly attendance counts have been successfully **reset to 0** for all members!")
+
 # Automated Daily Deployment Task (Runs daily at 7:00 AM Philippine Time)
 @tasks.loop(time=datetime.time(hour=7, minute=0, tzinfo=ZoneInfo("Asia/Manila")))
 async def daily_event_deployment():
@@ -117,10 +126,11 @@ async def check_limits(ctx):
     )
     await ctx.send(embed=embed)
     
-# Weekly count auto-reset every Sunday midnight Philippine Time
+# Weekly count auto-reset every Monday at 12:00 AM Philippine Time (Kept as backup)
 @tasks.loop(time=datetime.time(hour=0, minute=0, tzinfo=ZoneInfo("Asia/Manila")))
 async def reset_weekly_limits():
-    if datetime.datetime.now(ZoneInfo("Asia/Manila")).weekday() == 6:
+    # 0 = Monday in Python's weekday()
+    if datetime.datetime.now(ZoneInfo("Asia/Manila")).weekday() == 0:
         global user_weekly_counts
         user_weekly_counts = {}
         save_counts(user_weekly_counts)
