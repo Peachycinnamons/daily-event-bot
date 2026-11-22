@@ -1,0 +1,10 @@
+.env
+counts.json
+counts.json.tmp
+events.json
+events.json.tmp
+__pycache__/
+*.py[cod]
+.local/
+.venv/
+venv/
